@@ -16,3 +16,8 @@ Cargo.lock
 # Idea project files
 .idea
 
+
+
+# Added by cargo
+
+/target
