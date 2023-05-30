@@ -1,19 +1,45 @@
-use std::io;
-use std::path::Path;
-use std::fs;
-use crate::scaffolding::project_template::{ProjectTemplate, Clonable};
+use crate::scaffolding::ProjectTemplate;
 
-pub struct ProjectBuilder;
+pub struct ProjectBuilder {
+    dest_folder: Option<String>,
+    name: Option<String>,
+    template_project: Option<ProjectTemplate>,
+}
 
 impl ProjectBuilder {
-    pub fn create_project<P: AsRef<Path>>(&self, dest_folder: P, name: &str, template_project: &ProjectTemplate) -> io::Result<()> {
-        println!("Creating project {} in {:?}", name, dest_folder.as_ref());
+    pub fn new() -> Self {
+        Self {
+            dest_folder: None,
+            name: None,
+            template_project: None,
+        }
+    }
 
-        // TODO: more errors
-        fs::create_dir_all(&dest_folder)?;
+    pub fn dest_folder(mut self, folder: String) -> Self {
+        self.dest_folder = Some(folder);
+        self
+    }
 
-        template_project.clone_project()?;
+    pub fn name(mut self, name: String) -> Self {
+        self.name = Some(name);
+        self
+    }
 
-        Ok(())
+    pub fn template_project(mut self, template: ProjectTemplate) -> Self {
+        self.template_project = Some(template);
+        self
+    }
+
+    pub fn build(self) -> Result<(), &'static str> {
+        match (self.dest_folder, self.name, self.template_project) {
+            (Some(folder), Some(name), Some(template)) => {
+                println!("Creating project {} in {}", name, folder);
+
+                //TODO: logic
+
+                Ok(())
+            }
+            _ => Err("Missing required fields"),
+        }
     }
 }

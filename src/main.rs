@@ -12,9 +12,14 @@ fn main() {
         ProjectType::Executable,
     );
 
-    let builder = ProjectBuilder;
+    let builder = ProjectBuilder::new()
+        .dest_folder("/path/to/destination".to_string())
+        .name("MyProject".to_string())
+        .template_project(template);
 
-    if let Err(e) = builder.create_project("/path/to/destination", "MyProject", &template) {
+    if let Err(e) = builder.build() {
         eprintln!("Error: {}", e);
     }
+}
+
 }
